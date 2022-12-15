@@ -1,0 +1,65 @@
+from tkinter import *
+from PIL import ImageTk, Image
+
+class EventRegistrationUI:
+    def __init__(self):
+        self.root = Tk()
+        self.root.title("Event Registration")
+        self.root.geometry("600x400")
+
+        # Set up the UI elements
+        self.setup_ui_elements()
+
+        self.root.mainloop()
+
+    def setup_ui_elements(self):
+        # Register for event button
+        register_button = Button(self.root, text="Register", command=self.register_for_event)
+        register_button.pack()
+
+        # Check in with QR code button
+        check_in_button = Button(self.root, text="Check In", command=self.check_in_with_qr_code)
+        check_in_button.pack()
+
+        # Label to display the registration code or error message
+        self.result_label = Label(self.root)
+        self.result_label.pack()
+
+    def register_for_event(self):
+        # Get the event ID and user information from the UI
+        event_id = self.get_event_id_from_ui()
+        name = self.get_name_from_ui()
+        email = self.get_email_from_ui()
+
+        # Register for the event and get the registration code
+        registration_code = register_for_event(event_id, name, email)
+
+        # Display the registration code
+        self.display_result(registration_code)
+
+    def check_in_with_qr_code(self):
+        # Get the event ID from the UI
+        event_id = self.get_event_id_from_ui()
+
+        # Open a file dialog to select the QR code image
+        qr_code_image = self.open_qr_code_image_dialog()
+
+        # Check in with the QR code
+        success = check_in_with_qr_code(event_id, qr_code_image)
+
+        if success:
+            # Display a success message
+            self.display_result("Successfully checked in!")
+        else:
+            # Display an error message
+            self.display_result("Invalid QR code or registration information.")
+
+    # Helper functions for getting the event ID, user name, and email address
+    # from the UI, displaying the result, and opening a file dialog
+    # have been omitted for brevity
+
+    # Create the UI
+    ui = EventRegistrationUI()
+
+    # Start the main event loop
+    ui.root.mainloop()
